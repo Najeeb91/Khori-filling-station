@@ -22,7 +22,11 @@
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root"><main class="wrap">
+      <h1 class="title">⛽ PumpOS</h1>
+      <p class="sub">Loading fresh Day-1 prototype…</p>
+      <div class="card"><b>STAFF</b><br><span class="muted">Preparing dashboard</span></div>
+    </main></div>
 <script>
 const S={view:"staff",step:0,staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:"",shifts:[],credits:[],deliveries:[],prices:{petrol:0,diesel:0}};
 const staff=["Ramesh","Suresh","Anita"];
@@ -57,7 +61,7 @@ function review(){let x=sold(),d=difference();return `<div class="card"><b>${S.s
 ].map(a=>`<div class="rowline" style="padding:8px 0;border-bottom:1px solid var(--line)"><span class="muted">${a[0]}</span><b class="${a[0]==="Difference"?(Math.abs(d)<=5?"green":"red"):""}">${a[1]}</b></div>`).join("")}</div><div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="submit()">Submit shift</button></div></div>`}
 function result(){let d=difference(),ok=Math.abs(d)<=5;return `<main class="wrap result"><div class="circle ${ok?"":"bad"}">${ok?"✓":"!"}</div><h1 class="title">${ok?"Shift matched":"Mismatch flagged"}</h1><p class="sub">${ok?"This first-day shift is balanced.":"This shift needs manager review."}</p><div class="card" style="text-align:left"><div class="rowline"><span class="muted">Staff</span><b>${S.staff}</b></div><div class="rowline"><span class="muted">Expected cash</span><b>${money(expected())}</b></div><div class="rowline"><span class="muted">Cash counted</span><b>${money(+S.cash)}</b></div><div class="rowline"><span class="muted">Difference</span><b class="${ok?"green":"red"}">${d>=0?"+":""}${money(d)}</b></div></div><button class="btn primary" style="width:100%;margin-top:18px" onclick="newShift()">Start next shift</button></main>`}
 function manager(){return `<main class="wrap"><h1 class="title">Today at this pump</h1><p class="sub">Day 1 · clean operational dashboard</p><div class="grid">${stat("Shifts",S.shifts.length)}${stat("Open flags",S.shifts.filter(x=>x.status==="flagged").length)}${stat("Credit",money(S.credits.reduce((a,x)=>a+x.amount,0)))}${stat("Deliveries",S.deliveries.length)}</div><div class="section"><div class="sectionhead"><h2>Shift log</h2></div>${S.shifts.length?S.shifts.map(x=>`<div class="row"><div class="rowline"><b>${x.staff}</b><span class="${x.status==="matched"?"green":"red"}">${x.status==="matched"?"MATCHED":money(Math.abs(x.diff))+" SHORT/OVER"}</span></div><div class="muted">${x.date}</div></div>`).join(""):`<div class="empty">No shifts yet. The pump is ready for its first shift.</div>`}</div><div class="section"><h2>Credit ledger</h2>${S.credits.length?S.credits.map(x=>`<div class="row rowline"><b>${x.name}</b><span class="amber">${money(x.amount)}</span></div>`).join(""):`<div class="empty">₹0 · No credit customers.</div>`}</div><div class="section"><h2>Fuel prices</h2><div class="grid"><div class="card"><span class="muted">Petrol</span><br><b>${money(S.prices.petrol)}/L</b></div><div class="card"><span class="muted">Diesel</span><br><b>${money(S.prices.diesel)}/L</b></div></div></div><div class="section"><button class="btn danger" style="width:100%" onclick="resetAll()">Reset everything to Day 1</button></div></main>`}
-function owner(){let m=S.shifts.reduce((a,x)=>a+Math.abs(x.diff||0),0),c=S.credits.reduce((a,x)=>a+x.amount,0);return `<main class="wrap"><h1 class="title">Business overview</h1><p class="sub">Day 1 · no historical data</p><div class="grid">${stat("Revenue",money(0))}${stat("Mismatch",money(m))}${stat("Credit",money(c))}${stat("Shifts",S.shifts.length)}</div><div class="section">${S.shifts.length?`<div class="card">Historical analysis will populate after shifts are completed.</div>`:`<div class="empty">Nothing to analyse yet.<br><br>Start the first staff shift.</div>`}</div><div class="section"><button class="btn danger" style="width:100%" onclick="resetAll()">Reset everything to Day 1</button></div></main>`}
+function owner(){let m=S.shifts.reduce((a,x)=>a+Math.abs(x.diff||0),0),c=S.credits.reduce((a,x)=>a+x.amount,0);return `<main class="wrap"><h1 class="title">Business overview</h1><p class="sub">Day 1 · no historical data</p><div class="grid">${stat("Revenue",money(0))}${stat("Mismatch",money(m))}${stat("Credit",money(c))}${stat("Shifts",S.shifts.length)}</div><div class="section">${S.shifts.length ? `<div class="card">Historical analysis will populate after shifts are completed.</div>` : `<div class="empty">Nothing to analyse yet.<br><br>Start the first staff shift.</div>`}</div><div class="section"><button class="btn danger" style="width:100%" onclick="resetAll()">Reset everything to Day 1</button></div></main>`}
 function stat(l,v){return `<div class="card stat"><label>${l}</label><strong>${v}</strong></div>`}
 function view(v){S.view=v;render()}
 function choose(n){S.staff=n;S.step=1;render()}
@@ -66,7 +70,10 @@ function back(){S.step=Math.max(0,S.step-1);render()}
 function submit(){let d=difference();S.shifts.unshift({id:Date.now(),staff:S.staff,date:"Today",diff:d,status:Math.abs(d)<=5?"matched":"flagged"});if(+S.credit>0&&S.creditName)S.credits.unshift({id:Date.now(),name:S.creditName,amount:+S.credit,days:0});save();S.step=7;render()}
 function newShift(){Object.assign(S,{step:0,staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:""});render()}
 function render(){document.getElementById("root").innerHTML=app()}
-render();
+try{render()}catch(e){
+      document.getElementById("root").innerHTML='<main class="wrap"><h1 class="title">PumpOS</h1><div class="card"><b>Prototype error</b><p class="muted">'+String(e.message||e)+'</p></div></main>';
+      console.error(e);
+    }
 </script>
 </body>
 </html>
