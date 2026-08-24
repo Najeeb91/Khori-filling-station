@@ -24,7 +24,12 @@ label.field{display:block;color:var(--muted);font-size:13px;margin:15px 0 7px}in
 </style>
 </head>
 <body>
-<div id="root"></div>
+<div id="root">
+  <div style="min-height:100vh;background:#12140F;color:#F4F1E8;font-family:system-ui;padding:24px">
+    <div style="font-size:20px;font-weight:800">⛽ PumpOS</div>
+    <div style="color:#9A9A88;font-size:13px;margin-top:8px">Loading test prototype…</div>
+  </div>
+</div>
 <script>
 const KEY="pumpos-test-v1";
 const staff=[{id:"s1",name:"Ramesh"},{id:"s2",name:"Suresh"},{id:"s3",name:"Anita"}];
@@ -55,8 +60,9 @@ function revenue(){let s=sold();return s.p*db.prices.petrol+s.d*db.prices.diesel
 function expected(){return revenue()-(+form.digital||0)-(+form.credit||0)}
 function diff(){return Math.round((+form.cash||0)-expected())}
 function render(){
- document.body.innerHTML='<div id="root"></div>'+modalHTML();
- $("root").innerHTML=appHTML();
+ const root=document.getElementById("root");
+ if(!root){document.body.innerHTML='<div id="root"></div>';return render();}
+ root.innerHTML=appHTML()+modalHTML();
  bind();
 }
 function modalHTML(){
@@ -135,7 +141,11 @@ function closeModal(){modal=null;render()}
 function addDelivery(){let q=+$("delQty").value;if(!q)return alert("Enter quantity");db.deliveries.unshift({id:Date.now(),product:$("delProduct").value,qty:q,ref:$("delRef").value,date:"24 Aug"});save();closeModal()}
 function savePrices(){let p=+$("priceP").value,d=+$("priceD").value;if(p>0&&d>0){db.prices={petrol:p,diesel:d};save();closeModal()}}
 function resetData(){db=structuredClone(defaults);save();modal=null;view="staff";newShift()}
-render();
+try{render()}catch(e){
+ const r=document.getElementById("root");
+ if(r) r.innerHTML='<div style="min-height:100vh;background:#12140F;color:#F4F1E8;font-family:system-ui;padding:24px"><h2>PumpOS could not load</h2><p style="color:#9A9A88">Please reopen the prototype file. Error: '+String(e.message||e)+'</p></div>';
+ console.error(e);
+}
 </script>
 </body>
 </html>
