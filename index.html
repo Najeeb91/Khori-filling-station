@@ -1,151 +1,72 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>PumpOS — Test Prototype</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>PumpOS — First Day Prototype</title>
 <style>
-:root{--bg:#12140F;--panel:#1B1E16;--panel2:#22261B;--amber:#F5A623;--amber2:#8A5E14;--green:#4B7B3F;--red:#C0503A;--text:#F4F1E8;--muted:#9A9A88;--line:#33362A}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh}.top{position:sticky;top:0;z-index:10;background:#12140F;border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:center;justify-content:space-between;padding:15px 18px}.brand b{font-size:18px}.brand span{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:5px 8px;border-radius:20px}
-.tabs{display:flex}.tabs button{flex:1;padding:12px 4px;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font-weight:700;font-size:12px}.tabs button.active{color:var(--amber);border-color:var(--amber)}
-.wrap{max-width:760px;margin:auto;padding:24px 18px 90px}.title{font-size:25px;margin:0 0 7px}.sub{color:var(--muted);font-size:13px;margin:0 0 22px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px}.card h3{font-size:14px;margin:0 0 12px}.stat label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px}.stat strong{font:700 24px ui-monospace,monospace}.section{margin-top:28px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sectionhead h2{font-size:16px;margin:0}.list{display:flex;flex-direction:column;gap:9px}.row{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px}.rowline{display:flex;justify-content:space-between;align-items:center;gap:12px}.muted{color:var(--muted);font-size:12px}.small{font-size:13px}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}
-label.field{display:block;color:var(--muted);font-size:13px;margin:15px 0 7px}input,select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px;color:var(--text);outline:none}input:focus,select:focus{border-color:var(--amber2)}
-.big input{font-size:34px;font-weight:700;font-family:ui-monospace,monospace;border:none;border-bottom:2px solid var(--amber2);border-radius:0;background:transparent;padding:8px 0}
-.btn{border:0;border-radius:10px;padding:13px 16px;font-weight:800}.primary{background:var(--amber);color:#1B1E16}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.danger{background:rgba(192,80,58,.15);color:#ef9b89;border:1px solid var(--red)}.full{width:100%}.actions{display:flex;gap:9px;margin-top:18px}.actions>*{flex:1}
-.progress{display:flex;gap:4px;margin:14px 0 28px}.progress i{height:3px;flex:1;background:var(--line);border-radius:3px}.progress i.on{background:var(--amber)}
-.choice{width:100%;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px;color:var(--text);margin-bottom:9px;text-align:left}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--amber2);font-weight:800}
-.badge{font-size:10px;border-radius:20px;padding:5px 8px;background:var(--panel2);color:var(--muted)}.badge.red{color:#ef9b89;background:rgba(192,80,58,.12)}.badge.green{color:#a6d49b;background:rgba(75,123,63,.12)}
-.notice{padding:13px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);font-size:13px;margin-top:12px}.result{text-align:center;padding-top:25px}.circle{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;font-size:40px;border:3px solid var(--green);background:rgba(75,123,63,.12)}.circle.bad{border-color:var(--red);background:rgba(192,80,58,.12)}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:30;display:grid;place-items:end center}.sheet{width:min(760px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:20px;max-height:90vh;overflow:auto}.sheet h2{margin-top:0}
-.kpi{display:flex;gap:10px}.kpi .card{flex:1}.empty{padding:25px;text-align:center;color:var(--muted);background:var(--panel);border-radius:11px}
-@media(min-width:650px){.modal{place-items:center}.sheet{border-radius:16px}.grid{grid-template-columns:repeat(4,1fr)}}
+:root{--bg:#12140F;--panel:#1B1E16;--panel2:#22261B;--amber:#F5A623;--green:#4B7B3F;--red:#C0503A;--text:#F4F1E8;--muted:#9A9A88;--line:#33362A}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input{font:inherit}
+.app{min-height:100vh}.top{position:sticky;top:0;z-index:5;background:rgba(18,20,15,.98);border-bottom:1px solid var(--line)}
+.brand{display:flex;justify-content:space-between;align-items:center;padding:16px 18px}.brand b{font-size:19px}.tag{font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:20px;padding:5px 8px}
+.tabs{display:flex}.tabs button{flex:1;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);padding:12px 5px;font-size:12px;font-weight:800}.tabs button.active{color:var(--amber);border-color:var(--amber)}
+.wrap{max-width:760px;margin:auto;padding:26px 18px 90px}.title{font-size:25px;margin:0 0 6px}.sub{font-size:13px;color:var(--muted);margin:0 0 22px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:16px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.stat label{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}.stat strong{font:700 25px ui-monospace,monospace}
+.choice{width:100%;display:flex;align-items:center;gap:13px;background:var(--panel);border:1px solid var(--line);color:var(--text);border-radius:12px;padding:16px;margin-bottom:10px;text-align:left}.avatar{width:40px;height:40px;border-radius:50%;background:#8A5E14;display:grid;place-items:center;font-weight:800}
+.field{display:block;color:var(--muted);font-size:13px;margin:17px 0 7px}input{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:13px;outline:none}input:focus{border-color:#8A5E14}.big input{font:700 34px ui-monospace,monospace;background:transparent;border:0;border-bottom:2px solid #8A5E14;border-radius:0;padding:8px 0}
+.muted{color:var(--muted);font-size:12px}.actions{display:flex;gap:9px;margin-top:20px}.btn{flex:1;border-radius:10px;padding:14px 15px;font-weight:800;border:0}.primary{background:var(--amber);color:#1B1E16}.secondary{background:var(--panel2);border:1px solid var(--line);color:var(--text)}.danger{background:rgba(192,80,58,.12);border:1px solid var(--red);color:#ef9b89}
+.progress{display:flex;gap:4px;margin:15px 0 28px}.progress i{height:3px;flex:1;border-radius:3px;background:var(--line)}.progress i.on{background:var(--amber)}
+.notice{margin-top:13px;padding:13px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);font-size:13px}.green{color:#9bcf8d}.red{color:#ef9b89}.amber{color:var(--amber)}
+.section{margin-top:28px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sectionhead h2{font-size:16px;margin:0}.row{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:9px}.rowline{display:flex;justify-content:space-between;gap:12px;align-items:center}.empty{text-align:center;color:var(--muted);padding:28px;background:var(--panel);border-radius:11px}.result{text-align:center}.circle{width:90px;height:90px;margin:25px auto 18px;border-radius:50%;display:grid;place-items:center;font-size:40px;border:3px solid var(--green);color:var(--green);background:rgba(75,123,63,.12)}.circle.bad{border-color:var(--red);color:#ef9b89;background:rgba(192,80,58,.12)}
+@media(min-width:650px){.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
-<div id="root">
-  <div style="min-height:100vh;background:#12140F;color:#F4F1E8;font-family:system-ui;padding:24px">
-    <div style="font-size:20px;font-weight:800">⛽ PumpOS</div>
-    <div style="color:#9A9A88;font-size:13px;margin-top:8px">Loading test prototype…</div>
-  </div>
-</div>
+<div id="root"></div>
 <script>
-const KEY="pumpos-test-v1";
-const staff=[{id:"s1",name:"Ramesh"},{id:"s2",name:"Suresh"},{id:"s3",name:"Anita"}];
-const defaults={
- prices:{petrol:96.72,diesel:89.62},
- shifts:[
-  {id:1,staff:"Ramesh",date:"24 Aug",openP:1000,closeP:1080,openD:2000,closeD:2050,cash:12375,digital:2500,credit:0,diff:0,status:"matched",note:""},
-  {id:2,staff:"Suresh",date:"24 Aug",openP:1080,closeP:1160,openD:2050,closeD:2110,cash:12000,digital:2500,credit:0,diff:-420,status:"flagged",note:""},
-  {id:3,staff:"Anita",date:"23 Aug",openP:900,closeP:980,openD:1900,closeD:1960,cash:13500,digital:2500,credit:0,diff:0,status:"matched",note:""}
- ],
- credits:[
-  {id:1,name:"Verma Transport",amount:8400,days:22},
-  {id:2,name:"Local Taxi Union",amount:3200,days:6},
-  {id:3,name:"Gupta Traders",amount:15600,days:41}
- ],
- deliveries:[]
-};
-function load(){try{return JSON.parse(localStorage.getItem(KEY))||structuredClone(defaults)}catch{return structuredClone(defaults)}}
-let db=load();
-function save(){localStorage.setItem(KEY,JSON.stringify(db))}
-let view="staff",step=0,form={staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:""};
-let noteDraft={};let modal=null;
-const $=id=>document.getElementById(id);
-function money(n){return "₹"+Math.round(n).toLocaleString("en-IN")}
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function sold(){return {p:Math.max(0,+form.closeP-+form.openP||0),d:Math.max(0,+form.closeD-+form.openD||0)}}
-function revenue(){let s=sold();return s.p*db.prices.petrol+s.d*db.prices.diesel}
-function expected(){return revenue()-(+form.digital||0)-(+form.credit||0)}
-function diff(){return Math.round((+form.cash||0)-expected())}
-function render(){
- const root=document.getElementById("root");
- if(!root){document.body.innerHTML='<div id="root"></div>';return render();}
- root.innerHTML=appHTML()+modalHTML();
- bind();
+const S={view:"staff",step:0,staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:"",shifts:[],credits:[],deliveries:[],prices:{petrol:0,diesel:0}};
+const staff=["Ramesh","Suresh","Anita"];
+function money(n){return "₹"+Math.round(n||0).toLocaleString("en-IN")}
+function sold(){return {p:Math.max(0,(+S.closeP||0)-(+S.openP||0)),d:Math.max(0,(+S.closeD||0)-(+S.openD||0))}}
+function revenue(){let x=sold();return x.p*S.prices.petrol+x.d*S.prices.diesel}
+function expected(){return revenue()-(+S.digital||0)-(+S.credit||0)}
+function difference(){return Math.round((+S.cash||0)-expected())}
+function save(){localStorage.setItem("pumpos-first-day",JSON.stringify({shifts:S.shifts,credits:S.credits,deliveries:S.deliveries,prices:S.prices}))}
+function clearSaved(){localStorage.removeItem("pumpos-first-day")}
+function resetAll(){clearSaved();S.step=0;S.staff="";S.openP="";S.openD="";S.closeP="";S.closeD="";S.cash="";S.digital="";S.credit="";S.creditName="";S.shifts=[];S.credits=[];S.deliveries=[];S.prices={petrol:0,diesel:0};render()}
+function app(){
+return `<div class="app"><header class="top"><div class="brand"><b>⛽ PumpOS</b><span class="tag">FIRST DAY · EMPTY</span></div><div class="tabs">
+${["staff","manager","owner"].map(v=>`<button class="${S.view===v?"active":""}" onclick="view('${v}')">${v.toUpperCase()}</button>`).join("")}</div></header>${S.view==="staff"?staff():S.view==="manager"?manager():owner()}</div>`
 }
-function modalHTML(){
- if(!modal)return "";
- if(modal==="delivery")return `<div class="modal"><div class="sheet"><h2>Log fuel delivery</h2>
- <label class="field">Product</label><select id="delProduct"><option>Petrol</option><option>Diesel</option></select>
- <label class="field">Quantity (L)</label><input id="delQty" inputmode="decimal" placeholder="e.g. 12000">
- <label class="field">Supplier / invoice</label><input id="delRef" placeholder="e.g. IOCL Invoice 4581">
- <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="addDelivery()">Save delivery</button></div></div></div>`;
- if(modal==="prices")return `<div class="modal"><div class="sheet"><h2>Update fuel prices</h2>
- <label class="field">Petrol ₹/L</label><input id="priceP" value="${db.prices.petrol}" inputmode="decimal">
- <label class="field">Diesel ₹/L</label><input id="priceD" value="${db.prices.diesel}" inputmode="decimal">
- <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="savePrices()">Update prices</button></div></div></div>`;
- if(modal==="reset")return `<div class="modal"><div class="sheet"><h2>Reset test data?</h2><p class="muted">This will restore the demo shifts, credit ledger, prices and deliveries.</p><div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn danger" onclick="resetData()">Reset prototype</button></div></div></div>`;
- return "";
+function staff(){
+if(S.step===7)return result();
+let titles=["Who is closing this shift?","Opening meter readings","Closing meter readings","Cash counted","Card / UPI total","Credit given today","Review & submit"];
+let body=[who(),open(),close(),cash(),digital(),credit(),review()][S.step];
+return `<main class="wrap"><h1 class="title">${titles[S.step]}</h1><p class="sub">Fresh installation · no previous data</p><div class="progress">${titles.map((_,i)=>`<i class="${i<=S.step?"on":""}"></i>`).join("")}</div>${body}</main>`
 }
-function appHTML(){
- return `<div class="app"><header class="top"><div class="brand"><b>⛽ PumpOS</b><span>TEST PROTOTYPE</span></div><nav class="tabs">${["staff","manager","owner"].map(v=>`<button class="${view===v?"active":""}" onclick="setView('${v}')">${v.toUpperCase()}</button>`).join("")}</nav></header>${view==="staff"?staffHTML():view==="manager"?managerHTML():ownerHTML()}</div>`;
-}
-function staffHTML(){
- if(step===7)return resultHTML();
- const titles=["Who is closing this shift?","Opening meter readings","Closing meter readings","Cash counted","Card / UPI total","Credit given today","Review & submit"];
- return `<main class="wrap"><h1 class="title">${titles[step]}</h1><p class="sub">Staff shift closing · Step ${step+1} of 7</p><div class="progress">${titles.map((_,i)=>`<i class="${i<=step?"on":""}"></i>`).join("")}</div>${[
-  whoHTML(),openHTML(),closeHTML(),cashHTML(),digitalHTML(),creditHTML(),reviewHTML()
- ][step]}</main>`;
-}
-function whoHTML(){return `<div>${staff.map(s=>`<button class="choice" onclick="chooseStaff('${s.name}')"><div class="avatar">${s.name[0]}</div><div><b>${s.name}</b><div class="muted">Tap to continue</div></div></button>`).join("")}</div>`}
-function big(label,key,unit){return `<label class="field">${label}</label><div class="big"><input id="${key}" value="${esc(form[key])}" inputmode="decimal" placeholder="0" oninput="form.${key}=this.value"></div><div class="muted" style="margin-top:5px">${unit}</div>`}
-function openHTML(){return `<div class="card">${big("Petrol opening meter","openP","litres")}${big("Diesel opening meter","openD","litres")}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()" ${!form.openP||!form.openD?"disabled":""}>Next</button></div></div>`}
-function closeHTML(){let s=sold();return `<div class="card">${big("Petrol closing meter","closeP","litres")}${big("Diesel closing meter","closeD","litres")}<div class="notice amber">Sold so far: <b>${s.p.toFixed(1)} L petrol</b> · <b>${s.d.toFixed(1)} L diesel</b></div><div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()" ${!form.closeP||!form.closeD?"disabled":""}>Next</button></div></div>`}
-function cashHTML(){return `<div class="card">${big("Cash counted in hand","cash","₹")}${calcPreview()}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()" ${!form.cash?"disabled":""}>Next</button></div></div>`}
-function digitalHTML(){return `<div class="card">${big("Total card + UPI","digital","₹")}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()">Next</button></div></div>`}
-function creditHTML(){return `<div class="card">${big("Credit given today (0 if none)","credit","₹")}${+form.credit>0?`<label class="field">Customer name</label><input id="creditName" value="${esc(form.creditName)}" oninput="form.creditName=this.value" placeholder="Customer / company name">`:""}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()">Next</button></div></div>`}
-function calcPreview(){return `<div class="notice">Expected cash: <b>${money(expected())}</b><br>Current difference: <b class="${Math.abs(diff())<=5?"green":"red"}">${diff()>=0?"+":""}${money(diff())}</b></div>`}
-function reviewHTML(){return `<div class="card"><h3>Review shift</h3>${[
- ["Staff",form.staff],["Petrol sold",sold().p.toFixed(1)+" L"],["Diesel sold",sold().d.toFixed(1)+" L"],["Fuel revenue",money(revenue())],["Card / UPI",money(+form.digital||0)],["Credit",money(+form.credit||0)],["Expected cash",money(expected())],["Cash counted",money(+form.cash||0)],["Difference",(diff()>=0?"+":"-")+money(Math.abs(diff()))]
-].map((x,i)=>`<div class="rowline" style="padding:7px 0;border-bottom:1px solid var(--line);"><span class="${i>=6?"":"muted"}">${x[0]}</span><b class="${x[0]==="Difference"?(Math.abs(diff())<=5?"green":"red"):""}">${x[1]}</b></div>`).join("")}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="submitShift()">Submit shift</button></div></div>`}
-function resultHTML(){let d=diff(),ok=Math.abs(d)<=5;return `<main class="wrap result"><div class="circle ${ok?"":"bad"}">${ok?"✓":"!"}</div><h1 class="title">${ok?"Shift matched":"Mismatch flagged"}</h1><p class="sub">${ok?"Cash reconciliation is within ₹5 tolerance.":"Manager review is required."}</p><div class="card" style="text-align:left">${[
-["Staff",form.staff],["Fuel revenue",money(revenue())],["Digital",money(+form.digital||0)],["Credit",money(+form.credit||0)],["Expected cash",money(expected())],["Cash counted",money(+form.cash||0)],["Difference",(d>=0?"+":"-")+money(Math.abs(d))]
-].map(x=>`<div class="rowline" style="padding:8px 0"><span class="muted">${x[0]}</span><b class="${x[0]==="Difference"?(ok?"green":"red"):""}">${x[1]}</b></div>`).join("")}</div><button class="btn primary full" style="margin-top:18px" onclick="newShift()">Start next shift</button></main>`}
-function managerHTML(){
- const unresolved=db.shifts.filter(x=>x.status==="flagged"&&!x.note).length;
- return `<main class="wrap"><h1 class="title">Today at this pump</h1><p class="sub">Manager control centre · operational review</p>
- <div class="grid"><div class="card stat"><label>Shifts today</label><strong>${db.shifts.filter(x=>x.date==="24 Aug").length}</strong></div><div class="card stat"><label>Open flags</label><strong class="${unresolved?"red":""}">${unresolved}</strong></div><div class="card stat"><label>Credit exposure</label><strong>${money(db.credits.reduce((s,c)=>s+c.amount,0))}</strong></div><div class="card stat"><label>Deliveries</label><strong>${db.deliveries.length}</strong></div></div>
- <div class="section"><div class="sectionhead"><h2>Shift reconciliation</h2></div><div class="list">${db.shifts.map(shiftRow).join("")}</div></div>
- <div class="section"><div class="sectionhead"><h2>Credit ledger</h2></div><div class="list">${creditRows()}</div></div>
- <div class="section"><div class="sectionhead"><h2>Tanker deliveries</h2><button class="btn primary" onclick="openModal('delivery')">+ Add</button></div><div class="list">${db.deliveries.length?db.deliveries.map(d=>`<div class="row"><div class="rowline"><b>${esc(d.product)}</b><b class="amber">${(+d.qty).toLocaleString()} L</b></div><div class="muted">${esc(d.ref||"No invoice")} · ${d.date}</div></div>`).join(""):`<div class="empty">No deliveries recorded yet.</div>`}</div></div>
- <div class="section"><div class="sectionhead"><h2>Fuel prices</h2><button class="btn secondary" onclick="openModal('prices')">Edit</button></div><div class="kpi"><div class="card"><div class="muted">Petrol</div><b>${money(db.prices.petrol)}/L</b></div><div class="card"><div class="muted">Diesel</div><b>${money(db.prices.diesel)}/L</b></div></div></div>
- <div class="section"><button class="btn danger full" onclick="openModal('reset')">Reset test data</button></div></main>`;
-}
-function shiftRow(x){return `<div class="row"><div class="rowline"><div><b>${esc(x.staff)}</b><div class="muted">${x.date} · Revenue ${money(x.openP!==undefined?((x.closeP-x.openP)*db.prices.petrol+(x.closeD-x.openD)*db.prices.diesel):0)}</div></div><span class="badge ${x.status==="matched"?"green":"red"}">${x.status==="matched"?"MATCHED":(x.diff<0?money(Math.abs(x.diff))+" SHORT":money(x.diff)+" OVER")}</span></div>${x.status==="flagged"?`<div style="margin-top:12px">${x.note?`<div class="notice"><span class="muted">Resolution:</span> ${esc(x.note)}</div>`:`<input id="note${x.id}" placeholder="Why is this mismatch?"><button class="btn primary" style="margin-top:8px" onclick="resolve(${x.id})">Resolve flag</button>`}</div>`:""}</div>`}
-function creditRows(){if(!db.credits.length)return `<div class="empty">No credit customers.</div>`;return db.credits.map(c=>`<div class="row"><div class="rowline"><div><b>${esc(c.name)}</b><div class="muted">${c.days} days outstanding</div></div><b class="${c.days>30?"red":"amber"}">${money(c.amount)}</b></div></div>`).join("")}
-function ownerHTML(){
- const mismatch=db.shifts.reduce((s,x)=>s+Math.abs(x.diff||0),0),credit=db.credits.reduce((s,x)=>s+x.amount,0),over=db.credits.filter(x=>x.days>30),revenueEst=db.shifts.length*9200;
- return `<main class="wrap"><h1 class="title">Business overview</h1><p class="sub">Owner view · money, risk and trends</p>
- <div class="grid"><div class="card stat"><label>Est. revenue</label><strong>${money(revenueEst)}</strong></div><div class="card stat"><label>Total mismatch</label><strong class="${mismatch?"red":"green"}">${money(mismatch)}</strong></div><div class="card stat"><label>Credit exposure</label><strong>${money(credit)}</strong></div><div class="card stat"><label>30+ day overdue</label><strong class="${over.length?"red":"green"}">${over.length}</strong></div></div>
- <div class="section"><div class="sectionhead"><h2>Staff pattern</h2></div><div class="list">${staff.map(s=>{let a=db.shifts.filter(x=>x.staff===s.name),m=a.filter(x=>x.diff!==0).length;return `<div class="row"><div class="rowline"><b>${s.name}</b><span class="${m>1?"red":"muted"}">${m} mismatch${m===1?"":"es"} / ${a.length} shifts</span></div></div>`}).join("")}</div></div>
- <div class="section"><div class="sectionhead"><h2>Credit aging</h2></div><div class="list">${[...db.credits].sort((a,b)=>b.days-a.days).map(c=>`<div class="row"><div class="rowline"><b>${esc(c.name)}</b><span class="${c.days>30?"red":"muted"}">${c.days}d · ${money(c.amount)}</span></div></div>`).join("")}</div></div>
- <div class="section"><div class="card"><h3>Prototype status</h3><div class="muted">Data is saved locally in this browser. This is for workflow testing — not production accounting.</div></div></div></main>`;
-}
-function bind(){}
-function setView(v){view=v;modal=null;render()}
-function chooseStaff(n){form.staff=n;step=1;render()}
-function next(){if(step===6){submitShift();return}step++;render()}
-function back(){step=Math.max(0,step-1);render()}
-function submitShift(){
- const d=diff(),s=sold(),id=Date.now();
- db.shifts.unshift({id,staff:form.staff,date:"24 Aug",openP:+form.openP,closeP:+form.closeP,openD:+form.openD,closeD:+form.closeD,cash:+form.cash,digital:+form.digital||0,credit:+form.credit||0,diff:d,status:Math.abs(d)<=5?"matched":"flagged",note:""});
- if(+form.credit>0&&form.creditName)db.credits.unshift({id:id+1,name:form.creditName,amount:+form.credit,days:0});
- save();step=7;render()
-}
-function newShift(){step=0;form={staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:""};render()}
-function resolve(id){let n=document.getElementById("note"+id)?.value.trim()||"Resolved by manager";db.shifts=db.shifts.map(x=>x.id===id?({...x,note:n,status:"resolved"}):x);save();render()}
-function openModal(m){modal=m;render()}
-function closeModal(){modal=null;render()}
-function addDelivery(){let q=+$("delQty").value;if(!q)return alert("Enter quantity");db.deliveries.unshift({id:Date.now(),product:$("delProduct").value,qty:q,ref:$("delRef").value,date:"24 Aug"});save();closeModal()}
-function savePrices(){let p=+$("priceP").value,d=+$("priceD").value;if(p>0&&d>0){db.prices={petrol:p,diesel:d};save();closeModal()}}
-function resetData(){db=structuredClone(defaults);save();modal=null;view="staff";newShift()}
-try{render()}catch(e){
- const r=document.getElementById("root");
- if(r) r.innerHTML='<div style="min-height:100vh;background:#12140F;color:#F4F1E8;font-family:system-ui;padding:24px"><h2>PumpOS could not load</h2><p style="color:#9A9A88">Please reopen the prototype file. Error: '+String(e.message||e)+'</p></div>';
- console.error(e);
-}
+function who(){return staff.map(n=>`<button class="choice" onclick="choose('${n}')"><span class="avatar">${n[0]}</span><span><b>${n}</b><br><span class="muted">Start shift closing</span></span></button>`).join("")}
+function big(label,key,unit){return `<label class="field">${label}</label><div class="big"><input value="${S[key]}" inputmode="decimal" placeholder="0" oninput="S.${key}=this.value"></div><div class="muted">${unit}</div>`}
+function nav(dis=false){return `<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()" ${dis?"disabled":""}>Next</button></div>`}
+function open(){return `<div class="card">${big("Petrol opening meter","openP","litres")}${big("Diesel opening meter","openD","litres")}${nav(!S.openP||!S.openD)}</div>`}
+function close(){let x=sold();return `<div class="card">${big("Petrol closing meter","closeP","litres")}${big("Diesel closing meter","closeD","litres")}<div class="notice amber">Sold: ${x.p.toFixed(1)} L petrol · ${x.d.toFixed(1)} L diesel</div>${nav(!S.closeP||!S.closeD)}</div>`}
+function cash(){return `<div class="card">${big("Cash counted in hand","cash","₹")}<div class="notice">Expected cash: <b>${money(expected())}</b><br>Difference: <b class="${Math.abs(difference())<=5?"green":"red"}">${difference()>=0?"+":""}${money(difference())}</b></div>${nav(!S.cash)}</div>`}
+function digital(){return `<div class="card">${big("Total card + UPI","digital","₹")}${nav()}</div>`}
+function credit(){return `<div class="card">${big("Credit given today","credit","₹")}${+S.credit>0?`<label class="field">Customer name</label><input value="${S.creditName}" placeholder="Customer / company" oninput="S.creditName=this.value">`:""}${nav()}</div>`}
+function review(){let x=sold(),d=difference();return `<div class="card"><b>${S.staff}</b><div class="section">${[
+["Petrol sold",x.p.toFixed(1)+" L"],["Diesel sold",x.d.toFixed(1)+" L"],["Fuel revenue",money(revenue())],["Card / UPI",money(+S.digital||0)],["Credit",money(+S.credit||0)],["Expected cash",money(expected())],["Cash counted",money(+S.cash||0)],["Difference",(d>=0?"+":"-")+money(Math.abs(d))]
+].map(a=>`<div class="rowline" style="padding:8px 0;border-bottom:1px solid var(--line)"><span class="muted">${a[0]}</span><b class="${a[0]==="Difference"?(Math.abs(d)<=5?"green":"red"):""}">${a[1]}</b></div>`).join("")}</div><div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="submit()">Submit shift</button></div></div>`}
+function result(){let d=difference(),ok=Math.abs(d)<=5;return `<main class="wrap result"><div class="circle ${ok?"":"bad"}">${ok?"✓":"!"}</div><h1 class="title">${ok?"Shift matched":"Mismatch flagged"}</h1><p class="sub">${ok?"This first-day shift is balanced.":"This shift needs manager review."}</p><div class="card" style="text-align:left"><div class="rowline"><span class="muted">Staff</span><b>${S.staff}</b></div><div class="rowline"><span class="muted">Expected cash</span><b>${money(expected())}</b></div><div class="rowline"><span class="muted">Cash counted</span><b>${money(+S.cash)}</b></div><div class="rowline"><span class="muted">Difference</span><b class="${ok?"green":"red"}">${d>=0?"+":""}${money(d)}</b></div></div><button class="btn primary" style="width:100%;margin-top:18px" onclick="newShift()">Start next shift</button></main>`}
+function manager(){return `<main class="wrap"><h1 class="title">Today at this pump</h1><p class="sub">Day 1 · clean operational dashboard</p><div class="grid">${stat("Shifts",S.shifts.length)}${stat("Open flags",S.shifts.filter(x=>x.status==="flagged").length)}${stat("Credit",money(S.credits.reduce((a,x)=>a+x.amount,0)))}${stat("Deliveries",S.deliveries.length)}</div><div class="section"><div class="sectionhead"><h2>Shift log</h2></div>${S.shifts.length?S.shifts.map(x=>`<div class="row"><div class="rowline"><b>${x.staff}</b><span class="${x.status==="matched"?"green":"red"}">${x.status==="matched"?"MATCHED":money(Math.abs(x.diff))+" SHORT/OVER"}</span></div><div class="muted">${x.date}</div></div>`).join(""):`<div class="empty">No shifts yet. The pump is ready for its first shift.</div>`}</div><div class="section"><h2>Credit ledger</h2>${S.credits.length?S.credits.map(x=>`<div class="row rowline"><b>${x.name}</b><span class="amber">${money(x.amount)}</span></div>`).join(""):`<div class="empty">₹0 · No credit customers.</div>`}</div><div class="section"><h2>Fuel prices</h2><div class="grid"><div class="card"><span class="muted">Petrol</span><br><b>${money(S.prices.petrol)}/L</b></div><div class="card"><span class="muted">Diesel</span><br><b>${money(S.prices.diesel)}/L</b></div></div></div><div class="section"><button class="btn danger" style="width:100%" onclick="resetAll()">Reset everything to Day 1</button></div></main>`}
+function owner(){let m=S.shifts.reduce((a,x)=>a+Math.abs(x.diff||0),0),c=S.credits.reduce((a,x)=>a+x.amount,0);return `<main class="wrap"><h1 class="title">Business overview</h1><p class="sub">Day 1 · no historical data</p><div class="grid">${stat("Revenue",money(0))}${stat("Mismatch",money(m))}${stat("Credit",money(c))}${stat("Shifts",S.shifts.length)}</div><div class="section">${S.shifts.length?`<div class="card">Historical analysis will populate after shifts are completed.</div>`:`<div class="empty">Nothing to analyse yet.<br><br>Start the first staff shift.</div>`}</div><div class="section"><button class="btn danger" style="width:100%" onclick="resetAll()">Reset everything to Day 1</button></div></main>`}
+function stat(l,v){return `<div class="card stat"><label>${l}</label><strong>${v}</strong></div>`}
+function view(v){S.view=v;render()}
+function choose(n){S.staff=n;S.step=1;render()}
+function next(){S.step++;render()}
+function back(){S.step=Math.max(0,S.step-1);render()}
+function submit(){let d=difference();S.shifts.unshift({id:Date.now(),staff:S.staff,date:"Today",diff:d,status:Math.abs(d)<=5?"matched":"flagged"});if(+S.credit>0&&S.creditName)S.credits.unshift({id:Date.now(),name:S.creditName,amount:+S.credit,days:0});save();S.step=7;render()}
+function newShift(){Object.assign(S,{step:0,staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:""});render()}
+function render(){document.getElementById("root").innerHTML=app()}
+render();
 </script>
 </body>
 </html>
