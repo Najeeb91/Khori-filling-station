@@ -1,262 +1,141 @@
-<!doctype html><html lang="en"><head>
-<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>PumpOS Demo</title>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-<style>html,body,#root{margin:0;min-height:100%;background:#12140F}*{box-sizing:border-box}button,input{font-family:inherit}body{overflow-x:hidden}</style>
-</head><body><div id="root"></div><script type="text/babel">
-const {useState}=React;
-const {Check,AlertTriangle,ChevronLeft,User,LayoutDashboard,ClipboardList,Truck,Tag,Users,TrendingUp,Wallet,MessageSquare}=lucide;
-// ---- Design tokens ----
-const C = {
-  bg: "#12140F",
-  panel: "#1B1E16",
-  panel2: "#22261B",
-  amber: "#F5A623",
-  amberDim: "#8A5E14",
-  green: "#4B7B3F",
-  red: "#C0503A",
-  text: "#F4F1E8",
-  textDim: "#9A9A88",
-  line: "#33362A",
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>PumpOS — Test Prototype</title>
+<style>
+:root{--bg:#12140F;--panel:#1B1E16;--panel2:#22261B;--amber:#F5A623;--amber2:#8A5E14;--green:#4B7B3F;--red:#C0503A;--text:#F4F1E8;--muted:#9A9A88;--line:#33362A}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}.app{min-height:100vh}.top{position:sticky;top:0;z-index:10;background:#12140F;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;justify-content:space-between;padding:15px 18px}.brand b{font-size:18px}.brand span{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:5px 8px;border-radius:20px}
+.tabs{display:flex}.tabs button{flex:1;padding:12px 4px;background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);font-weight:700;font-size:12px}.tabs button.active{color:var(--amber);border-color:var(--amber)}
+.wrap{max-width:760px;margin:auto;padding:24px 18px 90px}.title{font-size:25px;margin:0 0 7px}.sub{color:var(--muted);font-size:13px;margin:0 0 22px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:15px}.card h3{font-size:14px;margin:0 0 12px}.stat label{font-size:11px;color:var(--muted);display:block;margin-bottom:6px}.stat strong{font:700 24px ui-monospace,monospace}.section{margin-top:28px}.sectionhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.sectionhead h2{font-size:16px;margin:0}.list{display:flex;flex-direction:column;gap:9px}.row{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:13px}.rowline{display:flex;justify-content:space-between;align-items:center;gap:12px}.muted{color:var(--muted);font-size:12px}.small{font-size:13px}.green{color:var(--green)}.red{color:var(--red)}.amber{color:var(--amber)}
+label.field{display:block;color:var(--muted);font-size:13px;margin:15px 0 7px}input,select{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;padding:13px;color:var(--text);outline:none}input:focus,select:focus{border-color:var(--amber2)}
+.big input{font-size:34px;font-weight:700;font-family:ui-monospace,monospace;border:none;border-bottom:2px solid var(--amber2);border-radius:0;background:transparent;padding:8px 0}
+.btn{border:0;border-radius:10px;padding:13px 16px;font-weight:800}.primary{background:var(--amber);color:#1B1E16}.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--line)}.danger{background:rgba(192,80,58,.15);color:#ef9b89;border:1px solid var(--red)}.full{width:100%}.actions{display:flex;gap:9px;margin-top:18px}.actions>*{flex:1}
+.progress{display:flex;gap:4px;margin:14px 0 28px}.progress i{height:3px;flex:1;background:var(--line);border-radius:3px}.progress i.on{background:var(--amber)}
+.choice{width:100%;display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px;color:var(--text);margin-bottom:9px;text-align:left}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--amber2);font-weight:800}
+.badge{font-size:10px;border-radius:20px;padding:5px 8px;background:var(--panel2);color:var(--muted)}.badge.red{color:#ef9b89;background:rgba(192,80,58,.12)}.badge.green{color:#a6d49b;background:rgba(75,123,63,.12)}
+.notice{padding:13px;border-radius:10px;background:var(--panel2);border:1px solid var(--line);font-size:13px;margin-top:12px}.result{text-align:center;padding-top:25px}.circle{width:90px;height:90px;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;font-size:40px;border:3px solid var(--green);background:rgba(75,123,63,.12)}.circle.bad{border-color:var(--red);background:rgba(192,80,58,.12)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:30;display:grid;place-items:end center}.sheet{width:min(760px,100%);background:var(--panel);border:1px solid var(--line);border-radius:18px 18px 0 0;padding:20px;max-height:90vh;overflow:auto}.sheet h2{margin-top:0}
+.kpi{display:flex;gap:10px}.kpi .card{flex:1}.empty{padding:25px;text-align:center;color:var(--muted);background:var(--panel);border-radius:11px}
+@media(min-width:650px){.modal{place-items:center}.sheet{border-radius:16px}.grid{grid-template-columns:repeat(4,1fr)}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const KEY="pumpos-test-v1";
+const staff=[{id:"s1",name:"Ramesh"},{id:"s2",name:"Suresh"},{id:"s3",name:"Anita"}];
+const defaults={
+ prices:{petrol:96.72,diesel:89.62},
+ shifts:[
+  {id:1,staff:"Ramesh",date:"24 Aug",openP:1000,closeP:1080,openD:2000,closeD:2050,cash:12375,digital:2500,credit:0,diff:0,status:"matched",note:""},
+  {id:2,staff:"Suresh",date:"24 Aug",openP:1080,closeP:1160,openD:2050,closeD:2110,cash:12000,digital:2500,credit:0,diff:-420,status:"flagged",note:""},
+  {id:3,staff:"Anita",date:"23 Aug",openP:900,closeP:980,openD:1900,closeD:1960,cash:13500,digital:2500,credit:0,diff:0,status:"matched",note:""}
+ ],
+ credits:[
+  {id:1,name:"Verma Transport",amount:8400,days:22},
+  {id:2,name:"Local Taxi Union",amount:3200,days:6},
+  {id:3,name:"Gupta Traders",amount:15600,days:41}
+ ],
+ deliveries:[]
 };
-
-const STAFF = [
-  { id: "s1", name: "Ramesh" },
-  { id: "s2", name: "Suresh" },
-  { id: "s3", name: "Anita" },
-];
-
-const PRICE_PETROL = 96.72;
-const PRICE_DIESEL = 89.62;
-
-function BigNumberEntry({ label, unit, value, onChange, autoFocus }) {
-  return (
-    <div style={{ marginBottom: 28 }}>
-      <div style={{ color: C.textDim, fontSize: 15, marginBottom: 10, letterSpacing: 0.3 }}>{label}</div>
-      <div style={{ display: "flex", alignItems: "baseline", borderBottom: `2px solid ${C.amberDim}`, paddingBottom: 8 }}>
-        <input autoFocus={autoFocus} inputMode="decimal" value={value}
-          onChange={(e) => onChange(e.target.value.replace(/[^0-9.]/g, ""))}
-          placeholder="0"
-          style={{ fontFamily: "'JetBrains Mono', monospace", fontVariantNumeric: "tabular-nums", fontSize: 44, fontWeight: 600, background: "transparent", border: "none", outline: "none", color: C.text, width: "100%" }}
-        />
-        {unit && <span style={{ color: C.textDim, fontSize: 20, marginLeft: 8 }}>{unit}</span>}
-      </div>
-    </div>
-  );
+function load(){try{return JSON.parse(localStorage.getItem(KEY))||structuredClone(defaults)}catch{return structuredClone(defaults)}}
+let db=load();
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+let view="staff",step=0,form={staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:""};
+let noteDraft={};let modal=null;
+const $=id=>document.getElementById(id);
+function money(n){return "₹"+Math.round(n).toLocaleString("en-IN")}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function sold(){return {p:Math.max(0,+form.closeP-+form.openP||0),d:Math.max(0,+form.closeD-+form.openD||0)}}
+function revenue(){let s=sold();return s.p*db.prices.petrol+s.d*db.prices.diesel}
+function expected(){return revenue()-(+form.digital||0)-(+form.credit||0)}
+function diff(){return Math.round((+form.cash||0)-expected())}
+function render(){
+ document.body.innerHTML='<div id="root"></div>'+modalHTML();
+ $("root").innerHTML=appHTML();
+ bind();
 }
-
-function StepShell({ title, step, total, onBack, children }) {
-  return (
-    <div style={{ padding: "28px 24px 100px" }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-        {onBack ? <button onClick={onBack} style={{ background: "none", border: "none", color: C.textDim, display: "flex", alignItems: "center", gap: 4, cursor: "pointer", padding: 0 }}><ChevronLeft size={20} /> <span style={{ fontSize: 14 }}>Back</span></button> : <div />}
-        <div style={{ color: C.textDim, fontSize: 13, fontFamily: "monospace" }}>{step} / {total}</div>
-      </div>
-      <div style={{ display: "flex", gap: 4, marginBottom: 32 }}>
-        {Array.from({ length: total }).map((_, i) => <div key={i} style={{ height: 3, flex: 1, background: i < step ? C.amber : C.line, borderRadius: 2 }} />)}
-      </div>
-      <h1 style={{ fontSize: 26, fontWeight: 700, color: C.text, marginBottom: 28, letterSpacing: -0.3 }}>{title}</h1>
-      {children}
-    </div>
-  );
+function modalHTML(){
+ if(!modal)return "";
+ if(modal==="delivery")return `<div class="modal"><div class="sheet"><h2>Log fuel delivery</h2>
+ <label class="field">Product</label><select id="delProduct"><option>Petrol</option><option>Diesel</option></select>
+ <label class="field">Quantity (L)</label><input id="delQty" inputmode="decimal" placeholder="e.g. 12000">
+ <label class="field">Supplier / invoice</label><input id="delRef" placeholder="e.g. IOCL Invoice 4581">
+ <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="addDelivery()">Save delivery</button></div></div></div>`;
+ if(modal==="prices")return `<div class="modal"><div class="sheet"><h2>Update fuel prices</h2>
+ <label class="field">Petrol ₹/L</label><input id="priceP" value="${db.prices.petrol}" inputmode="decimal">
+ <label class="field">Diesel ₹/L</label><input id="priceD" value="${db.prices.diesel}" inputmode="decimal">
+ <div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn primary" onclick="savePrices()">Update prices</button></div></div></div>`;
+ if(modal==="reset")return `<div class="modal"><div class="sheet"><h2>Reset test data?</h2><p class="muted">This will restore the demo shifts, credit ledger, prices and deliveries.</p><div class="actions"><button class="btn secondary" onclick="closeModal()">Cancel</button><button class="btn danger" onclick="resetData()">Reset prototype</button></div></div></div>`;
+ return "";
 }
-
-function BottomButton({ label, onClick, disabled }) {
-  return <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, padding: 16, background: `linear-gradient(180deg, transparent, ${C.bg} 30%)` }}>
-    <button onClick={onClick} disabled={disabled} style={{ width: "100%", padding: "18px 0", fontSize: 18, fontWeight: 700, borderRadius: 12, border: "none", background: disabled ? C.line : C.amber, color: disabled ? C.textDim : "#1B1E16", cursor: disabled ? "not-allowed" : "pointer", letterSpacing: 0.2 }}>{label}</button>
-  </div>;
+function appHTML(){
+ return `<div class="app"><header class="top"><div class="brand"><b>⛽ PumpOS</b><span>TEST PROTOTYPE</span></div><nav class="tabs">${["staff","manager","owner"].map(v=>`<button class="${view===v?"active":""}" onclick="setView('${v}')">${v.toUpperCase()}</button>`).join("")}</nav></header>${view==="staff"?staffHTML():view==="manager"?managerHTML():ownerHTML()}</div>`;
 }
-
-function Row({ label, value, bold }) {
-  return <div style={{ display: "flex", justifyContent: "space-between", padding: "4px 0", color: bold ? C.text : C.textDim, fontWeight: bold ? 700 : 400 }}><span>{label}</span><span style={{ fontFamily: "monospace" }}>{value}</span></div>;
+function staffHTML(){
+ if(step===7)return resultHTML();
+ const titles=["Who is closing this shift?","Opening meter readings","Closing meter readings","Cash counted","Card / UPI total","Credit given today","Review & submit"];
+ return `<main class="wrap"><h1 class="title">${titles[step]}</h1><p class="sub">Staff shift closing · Step ${step+1} of 7</p><div class="progress">${titles.map((_,i)=>`<i class="${i<=step?"on":""}"></i>`).join("")}</div>${[
+  whoHTML(),openHTML(),closeHTML(),cashHTML(),digitalHTML(),creditHTML(),reviewHTML()
+ ][step]}</main>`;
 }
-
-function StatCard({ label, value, accent, sub }) {
-  return <div style={{ flex: 1, background: C.panel, borderRadius: 12, padding: 16 }}>
-    <div style={{ color: C.textDim, fontSize: 12, marginBottom: 6 }}>{label}</div>
-    <div style={{ fontSize: 26, fontWeight: 700, color: accent || C.text, fontFamily: "monospace" }}>{value}</div>
-    {sub && <div style={{ color: C.textDim, fontSize: 11, marginTop: 4 }}>{sub}</div>}
-  </div>;
+function whoHTML(){return `<div>${staff.map(s=>`<button class="choice" onclick="chooseStaff('${s.name}')"><div class="avatar">${s.name[0]}</div><div><b>${s.name}</b><div class="muted">Tap to continue</div></div></button>`).join("")}</div>`}
+function big(label,key,unit){return `<label class="field">${label}</label><div class="big"><input id="${key}" value="${esc(form[key])}" inputmode="decimal" placeholder="0" oninput="form.${key}=this.value"></div><div class="muted" style="margin-top:5px">${unit}</div>`}
+function openHTML(){return `<div class="card">${big("Petrol opening meter","openP","litres")}${big("Diesel opening meter","openD","litres")}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()" ${!form.openP||!form.openD?"disabled":""}>Next</button></div></div>`}
+function closeHTML(){let s=sold();return `<div class="card">${big("Petrol closing meter","closeP","litres")}${big("Diesel closing meter","closeD","litres")}<div class="notice amber">Sold so far: <b>${s.p.toFixed(1)} L petrol</b> · <b>${s.d.toFixed(1)} L diesel</b></div><div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()" ${!form.closeP||!form.closeD?"disabled":""}>Next</button></div></div>`}
+function cashHTML(){return `<div class="card">${big("Cash counted in hand","cash","₹")}${calcPreview()}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()" ${!form.cash?"disabled":""}>Next</button></div></div>`}
+function digitalHTML(){return `<div class="card">${big("Total card + UPI","digital","₹")}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()">Next</button></div></div>`}
+function creditHTML(){return `<div class="card">${big("Credit given today (0 if none)","credit","₹")}${+form.credit>0?`<label class="field">Customer name</label><input id="creditName" value="${esc(form.creditName)}" oninput="form.creditName=this.value" placeholder="Customer / company name">`:""}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="next()">Next</button></div></div>`}
+function calcPreview(){return `<div class="notice">Expected cash: <b>${money(expected())}</b><br>Current difference: <b class="${Math.abs(diff())<=5?"green":"red"}">${diff()>=0?"+":""}${money(diff())}</b></div>`}
+function reviewHTML(){return `<div class="card"><h3>Review shift</h3>${[
+ ["Staff",form.staff],["Petrol sold",sold().p.toFixed(1)+" L"],["Diesel sold",sold().d.toFixed(1)+" L"],["Fuel revenue",money(revenue())],["Card / UPI",money(+form.digital||0)],["Credit",money(+form.credit||0)],["Expected cash",money(expected())],["Cash counted",money(+form.cash||0)],["Difference",(diff()>=0?"+":"-")+money(Math.abs(diff()))]
+].map((x,i)=>`<div class="rowline" style="padding:7px 0;border-bottom:1px solid var(--line);"><span class="${i>=6?"":"muted"}">${x[0]}</span><b class="${x[0]==="Difference"?(Math.abs(diff())<=5?"green":"red"):""}">${x[1]}</b></div>`).join("")}<div class="actions"><button class="btn secondary" onclick="back()">Back</button><button class="btn primary" onclick="submitShift()">Submit shift</button></div></div>`}
+function resultHTML(){let d=diff(),ok=Math.abs(d)<=5;return `<main class="wrap result"><div class="circle ${ok?"":"bad"}">${ok?"✓":"!"}</div><h1 class="title">${ok?"Shift matched":"Mismatch flagged"}</h1><p class="sub">${ok?"Cash reconciliation is within ₹5 tolerance.":"Manager review is required."}</p><div class="card" style="text-align:left">${[
+["Staff",form.staff],["Fuel revenue",money(revenue())],["Digital",money(+form.digital||0)],["Credit",money(+form.credit||0)],["Expected cash",money(expected())],["Cash counted",money(+form.cash||0)],["Difference",(d>=0?"+":"-")+money(Math.abs(d))]
+].map(x=>`<div class="rowline" style="padding:8px 0"><span class="muted">${x[0]}</span><b class="${x[0]==="Difference"?(ok?"green":"red"):""}">${x[1]}</b></div>`).join("")}</div><button class="btn primary full" style="margin-top:18px" onclick="newShift()">Start next shift</button></main>`}
+function managerHTML(){
+ const unresolved=db.shifts.filter(x=>x.status==="flagged"&&!x.note).length;
+ return `<main class="wrap"><h1 class="title">Today at this pump</h1><p class="sub">Manager control centre · operational review</p>
+ <div class="grid"><div class="card stat"><label>Shifts today</label><strong>${db.shifts.filter(x=>x.date==="24 Aug").length}</strong></div><div class="card stat"><label>Open flags</label><strong class="${unresolved?"red":""}">${unresolved}</strong></div><div class="card stat"><label>Credit exposure</label><strong>${money(db.credits.reduce((s,c)=>s+c.amount,0))}</strong></div><div class="card stat"><label>Deliveries</label><strong>${db.deliveries.length}</strong></div></div>
+ <div class="section"><div class="sectionhead"><h2>Shift reconciliation</h2></div><div class="list">${db.shifts.map(shiftRow).join("")}</div></div>
+ <div class="section"><div class="sectionhead"><h2>Credit ledger</h2></div><div class="list">${creditRows()}</div></div>
+ <div class="section"><div class="sectionhead"><h2>Tanker deliveries</h2><button class="btn primary" onclick="openModal('delivery')">+ Add</button></div><div class="list">${db.deliveries.length?db.deliveries.map(d=>`<div class="row"><div class="rowline"><b>${esc(d.product)}</b><b class="amber">${(+d.qty).toLocaleString()} L</b></div><div class="muted">${esc(d.ref||"No invoice")} · ${d.date}</div></div>`).join(""):`<div class="empty">No deliveries recorded yet.</div>`}</div></div>
+ <div class="section"><div class="sectionhead"><h2>Fuel prices</h2><button class="btn secondary" onclick="openModal('prices')">Edit</button></div><div class="kpi"><div class="card"><div class="muted">Petrol</div><b>${money(db.prices.petrol)}/L</b></div><div class="card"><div class="muted">Diesel</div><b>${money(db.prices.diesel)}/L</b></div></div></div>
+ <div class="section"><button class="btn danger full" onclick="openModal('reset')">Reset test data</button></div></main>`;
 }
-
-function SectionHeader({ icon: Icon, title }) {
-  return <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, marginTop: 30 }}>
-    <Icon size={18} color={C.amber} /><h2 style={{ fontSize: 16, fontWeight: 700, color: C.text }}>{title}</h2>
-  </div>;
+function shiftRow(x){return `<div class="row"><div class="rowline"><div><b>${esc(x.staff)}</b><div class="muted">${x.date} · Revenue ${money(x.openP!==undefined?((x.closeP-x.openP)*db.prices.petrol+(x.closeD-x.openD)*db.prices.diesel):0)}</div></div><span class="badge ${x.status==="matched"?"green":"red"}">${x.status==="matched"?"MATCHED":(x.diff<0?money(Math.abs(x.diff))+" SHORT":money(x.diff)+" OVER")}</span></div>${x.status==="flagged"?`<div style="margin-top:12px">${x.note?`<div class="notice"><span class="muted">Resolution:</span> ${esc(x.note)}</div>`:`<input id="note${x.id}" placeholder="Why is this mismatch?"><button class="btn primary" style="margin-top:8px" onclick="resolve(${x.id})">Resolve flag</button>`}</div>`:""}</div>`}
+function creditRows(){if(!db.credits.length)return `<div class="empty">No credit customers.</div>`;return db.credits.map(c=>`<div class="row"><div class="rowline"><div><b>${esc(c.name)}</b><div class="muted">${c.days} days outstanding</div></div><b class="${c.days>30?"red":"amber"}">${money(c.amount)}</b></div></div>`).join("")}
+function ownerHTML(){
+ const mismatch=db.shifts.reduce((s,x)=>s+Math.abs(x.diff||0),0),credit=db.credits.reduce((s,x)=>s+x.amount,0),over=db.credits.filter(x=>x.days>30),revenueEst=db.shifts.length*9200;
+ return `<main class="wrap"><h1 class="title">Business overview</h1><p class="sub">Owner view · money, risk and trends</p>
+ <div class="grid"><div class="card stat"><label>Est. revenue</label><strong>${money(revenueEst)}</strong></div><div class="card stat"><label>Total mismatch</label><strong class="${mismatch?"red":"green"}">${money(mismatch)}</strong></div><div class="card stat"><label>Credit exposure</label><strong>${money(credit)}</strong></div><div class="card stat"><label>30+ day overdue</label><strong class="${over.length?"red":"green"}">${over.length}</strong></div></div>
+ <div class="section"><div class="sectionhead"><h2>Staff pattern</h2></div><div class="list">${staff.map(s=>{let a=db.shifts.filter(x=>x.staff===s.name),m=a.filter(x=>x.diff!==0).length;return `<div class="row"><div class="rowline"><b>${s.name}</b><span class="${m>1?"red":"muted"}">${m} mismatch${m===1?"":"es"} / ${a.length} shifts</span></div></div>`}).join("")}</div></div>
+ <div class="section"><div class="sectionhead"><h2>Credit aging</h2></div><div class="list">${[...db.credits].sort((a,b)=>b.days-a.days).map(c=>`<div class="row"><div class="rowline"><b>${esc(c.name)}</b><span class="${c.days>30?"red":"muted"}">${c.days}d · ${money(c.amount)}</span></div></div>`).join("")}</div></div>
+ <div class="section"><div class="card"><h3>Prototype status</h3><div class="muted">Data is saved locally in this browser. This is for workflow testing — not production accounting.</div></div></div></main>`;
 }
-
-const ROLES = [
-  { id: "staff", label: "STAFF" },
-  { id: "manager", label: "MANAGER" },
-  { id: "owner", label: "OWNER" },
-];
-
-function App() {
-  const [view, setView] = useState("staff");
-  const [step, setStep] = useState(0);
-  const [staffId, setStaffId] = useState(null);
-  const [petrolOpen, setPetrolOpen] = useState("");
-  const [petrolClose, setPetrolClose] = useState("");
-  const [dieselOpen, setDieselOpen] = useState("");
-  const [dieselClose, setDieselClose] = useState("");
-  const [cash, setCash] = useState("");
-  const [digital, setDigital] = useState("");
-  const [credit, setCredit] = useState("");
-  const [creditName, setCreditName] = useState("");
-  const [done, setDone] = useState(false);
-
-  const [log, setLog] = useState([
-    { id: 1, staff: "Ramesh", date: "Aug 24", diff: 0, note: null },
-    { id: 2, staff: "Suresh", date: "Aug 24", diff: -420, note: null },
-    { id: 3, staff: "Anita", date: "Aug 23", diff: 0, note: null },
-    { id: 4, staff: "Ramesh", date: "Aug 23", diff: 15, note: "Change given wrong to customer, corrected next shift" },
-    { id: 5, staff: "Suresh", date: "Aug 22", diff: -60, note: null },
-  ]);
-
-  const [credits, setCredits] = useState([
-    { name: "Verma Transport", amount: 8400, days: 22 },
-    { name: "Local Taxi Union", amount: 3200, days: 6 },
-    { name: "Gupta Traders", amount: 15600, days: 41 },
-  ]);
-  const [stockLogOpen, setStockLogOpen] = useState(false);
-  const [petrolPrice] = useState(PRICE_PETROL);
-  const [dieselPrice] = useState(PRICE_DIESEL);
-  const [noteDraft, setNoteDraft] = useState({});
-
-  const petrolSold = Math.max(0, (parseFloat(petrolClose) || 0) - (parseFloat(petrolOpen) || 0));
-  const dieselSold = Math.max(0, (parseFloat(dieselClose) || 0) - (parseFloat(dieselOpen) || 0));
-  const fuelRevenue = petrolSold * petrolPrice + dieselSold * dieselPrice;
-  const expectedCash = fuelRevenue - (parseFloat(digital) || 0) - (parseFloat(credit) || 0);
-  const actualCash = parseFloat(cash) || 0;
-  const diff = Math.round(actualCash - expectedCash);
-  const matched = Math.abs(diff) <= 5;
-
-  const steps = ["who", "openMeter", "closeMeter", "cash", "digital", "creditQ", "result"];
-  const next = () => setStep((s) => Math.min(s + 1, steps.length - 1));
-  const back = () => setStep((s) => Math.max(s - 1, 0));
-
-  function finish() {
-    setLog((l) => [{ id: Date.now(), staff: STAFF.find((s) => s.id === staffId)?.name, date: "Today", diff, note: null }, ...l]);
-    if (parseFloat(credit) > 0 && creditName) setCredits((c) => [{ name: creditName, amount: parseFloat(credit), days: 0 }, ...c]);
-    setDone(true);
-  }
-  function reset() {
-    setStep(0); setStaffId(null); setPetrolOpen(""); setPetrolClose(""); setDieselOpen(""); setDieselClose("");
-    setCash(""); setDigital(""); setCredit(""); setCreditName(""); setDone(false);
-  }
-  const current = steps[step];
-  function resolveFlag(id) {
-    setLog((l) => l.map((entry) => entry.id === id ? { ...entry, note: noteDraft[id] || "Resolved" } : entry));
-  }
-
-  const totalRevenueEstimate = log.length * 9200;
-  const totalMismatchAmount = log.reduce((sum, l) => sum + Math.abs(l.diff), 0);
-  const totalCreditExposure = credits.reduce((sum, c) => sum + c.amount, 0);
-  const overdueCredit = credits.filter((c) => c.days > 30);
-  const staffPatterns = STAFF.map((s) => {
-    const entries = log.filter((l) => l.staff === s.name);
-    return { name: s.name, mismatches: entries.filter((l) => l.diff !== 0).length, shifts: entries.length };
-  });
-
-  return <div style={{ minHeight: "100vh", background: C.bg, fontFamily: "'Inter', system-ui, sans-serif" }}>
-    <div style={{ display: "flex", borderBottom: `1px solid ${C.line}` }}>
-      {ROLES.map((r) => <button key={r.id} onClick={() => setView(r.id)} style={{ flex: 1, padding: "12px 0", background: "none", border: "none", color: view === r.id ? C.amber : C.textDim, fontWeight: 600, fontSize: 13, cursor: "pointer", borderBottom: view === r.id ? `2px solid ${C.amber}` : "2px solid transparent" }}>{r.label}</button>)}
-    </div>
-
-    {view === "staff" && !done && <>
-      {current === "who" && <StepShell title="Who is closing this shift?" step={1} total={7}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>{STAFF.map((s) =>
-          <button key={s.id} onClick={() => { setStaffId(s.id); next(); }} style={{ display: "flex", alignItems: "center", gap: 14, padding: "18px 16px", borderRadius: 12, border: `1px solid ${staffId === s.id ? C.amber : C.line}`, background: C.panel, color: C.text, fontSize: 18, fontWeight: 600, cursor: "pointer", textAlign: "left" }}>
-            <div style={{ width: 40, height: 40, borderRadius: "50%", background: C.amberDim, display: "flex", alignItems: "center", justifyContent: "center" }}><User size={20} color={C.text} /></div>{s.name}
-          </button>)}</div>
-      </StepShell>}
-
-      {current === "openMeter" && <StepShell title="Meter readings — start of shift" step={2} total={7} onBack={back}>
-        <BigNumberEntry label="Petrol nozzle — opening reading" unit="L" value={petrolOpen} onChange={setPetrolOpen} autoFocus />
-        <BigNumberEntry label="Diesel nozzle — opening reading" unit="L" value={dieselOpen} onChange={setDieselOpen} />
-        <BottomButton label="Next" onClick={next} disabled={!petrolOpen || !dieselOpen} />
-      </StepShell>}
-
-      {current === "closeMeter" && <StepShell title="Meter readings — end of shift" step={3} total={7} onBack={back}>
-        <BigNumberEntry label="Petrol nozzle — closing reading" unit="L" value={petrolClose} onChange={setPetrolClose} autoFocus />
-        <BigNumberEntry label="Diesel nozzle — closing reading" unit="L" value={dieselClose} onChange={setDieselClose} />
-        {(petrolClose || dieselClose) && <div style={{ background: C.panel2, borderRadius: 10, padding: "14px 16px", color: C.amber, fontSize: 15, fontFamily: "monospace" }}>Fuel sold: {petrolSold.toFixed(1)}L Petrol · {dieselSold.toFixed(1)}L Diesel</div>}
-        <div style={{ height: 20 }} /><BottomButton label="Next" onClick={next} disabled={!petrolClose || !dieselClose} />
-      </StepShell>}
-
-      {current === "cash" && <StepShell title="Cash counted" step={4} total={7} onBack={back}>
-        <BigNumberEntry label="Count the cash in hand" unit="₹" value={cash} onChange={setCash} autoFocus /><BottomButton label="Next" onClick={next} disabled={!cash} />
-      </StepShell>}
-
-      {current === "digital" && <StepShell title="Card / UPI total" step={5} total={7} onBack={back}>
-        <BigNumberEntry label="Total card + UPI payments" unit="₹" value={digital} onChange={setDigital} autoFocus /><BottomButton label="Next" onClick={next} />
-      </StepShell>}
-
-      {current === "creditQ" && <StepShell title="Credit given today" step={6} total={7} onBack={back}>
-        <BigNumberEntry label="Total credit amount (0 if none)" unit="₹" value={credit} onChange={setCredit} autoFocus />
-        {credit && parseFloat(credit) > 0 && <div style={{ marginBottom: 20 }}>
-          <div style={{ color: C.textDim, fontSize: 15, marginBottom: 10 }}>Customer name</div>
-          <input value={creditName} onChange={(e) => setCreditName(e.target.value)} placeholder="Type name" style={{ width: "100%", boxSizing: "border-box", fontSize: 20, background: C.panel, border: `1px solid ${C.line}`, borderRadius: 10, padding: "14px 16px", color: C.text, outline: "none" }} />
-        </div>}
-        <BottomButton label="See result" onClick={() => { next(); finish(); }} />
-      </StepShell>}
-    </>}
-
-    {view === "staff" && done && current === "result" && <div style={{ padding: "48px 24px", textAlign: "center" }}>
-      <div style={{ width: 100, height: 100, borderRadius: "50%", margin: "0 auto 24px", background: matched ? "rgba(75,123,63,0.15)" : "rgba(192,80,58,0.15)", display: "flex", alignItems: "center", justifyContent: "center", border: `3px solid ${matched ? C.green : C.red}` }}>
-        {matched ? <Check size={44} color={C.green} /> : <AlertTriangle size={44} color={C.red} />}
-      </div>
-      <h1 style={{ fontSize: 26, fontWeight: 700, color: C.text, marginBottom: 8 }}>{matched ? "All matched" : "Amount mismatch"}</h1>
-      <p style={{ color: C.textDim, fontSize: 15, marginBottom: 32 }}>{matched ? "Cash counted matches expected sales." : `Cash is ${diff < 0 ? "short" : "over"} by ₹${Math.abs(diff)}`}</p>
-      <div style={{ background: C.panel, borderRadius: 14, padding: 20, textAlign: "left", fontSize: 14, color: C.textDim, marginBottom: 32 }}>
-        <Row label="Fuel revenue" value={`₹${fuelRevenue.toFixed(0)}`} /><Row label="Card / UPI" value={`− ₹${digital || 0}`} /><Row label="Credit given" value={`− ₹${credit || 0}`} />
-        <div style={{ borderTop: `1px solid ${C.line}`, margin: "10px 0" }} />
-        <Row label="Expected cash" value={`₹${expectedCash.toFixed(0)}`} bold /><Row label="Cash counted" value={`₹${actualCash.toFixed(0)}`} bold />
-      </div>
-      <button onClick={reset} style={{ background: C.amber, border: "none", borderRadius: 12, padding: "16px 32px", fontWeight: 700, fontSize: 16, color: "#1B1E16", cursor: "pointer" }}>Start next shift</button>
-    </div>}
-
-    {view === "manager" && <div style={{ padding: "28px 24px 60px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}><ClipboardList size={22} color={C.amber} /><h1 style={{ fontSize: 22, fontWeight: 700, color: C.text }}>Today at this pump</h1></div>
-      <p style={{ color: C.textDim, fontSize: 13, marginBottom: 20 }}>Same-day operations — resolve, log, update.</p>
-      <div style={{ display: "flex", gap: 12, marginBottom: 10 }}><StatCard label="Shifts today" value={log.filter(l => l.date === "Today" || l.date === "Aug 24").length} /><StatCard label="Unresolved flags" value={log.filter(l => l.diff !== 0 && !l.note).length} accent={C.red} /></div>
-
-      <SectionHeader icon={ClipboardList} title="Shift log — resolve flags" />
-      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>{log.map((l) => <div key={l.id} style={{ background: C.panel, borderRadius: 12, padding: "14px 16px", border: `1px solid ${l.diff === 0 ? C.line : C.red}` }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}><div style={{ width: 36, height: 36, borderRadius: "50%", background: C.amberDim, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, fontWeight: 700, color: C.text }}>{l.staff?.[0]}</div><div><div style={{ color: C.text, fontWeight: 600, fontSize: 15 }}>{l.staff}</div><div style={{ color: C.textDim, fontSize: 12 }}>{l.date}</div></div></div>
-          <div style={{ color: l.diff === 0 ? C.green : C.red, fontWeight: 700, fontFamily: "monospace" }}>{l.diff === 0 ? "Matched" : `₹${Math.abs(l.diff)} ${l.diff < 0 ? "short" : "over"}`}</div>
-        </div>
-        {l.diff !== 0 && <div style={{ marginTop: 10 }}>{l.note ? <div style={{ display: "flex", gap: 8, alignItems: "flex-start", color: C.textDim, fontSize: 13 }}><MessageSquare size={14} style={{ marginTop: 2, flexShrink: 0 }} /><span>{l.note}</span></div> : <div style={{ display: "flex", gap: 8 }}><input value={noteDraft[l.id] || ""} onChange={(e) => setNoteDraft((d) => ({ ...d, [l.id]: e.target.value }))} placeholder="Add a note (why the mismatch?)" style={{ flex: 1, background: C.panel2, border: `1px solid ${C.line}`, borderRadius: 8, padding: "8px 10px", color: C.text, fontSize: 13, outline: "none" }} /><button onClick={() => resolveFlag(l.id)} style={{ background: C.amber, border: "none", borderRadius: 8, padding: "8px 14px", fontWeight: 700, fontSize: 13, color: "#1B1E16", cursor: "pointer" }}>Resolve</button></div>}</div>}
-      </div>)}</div>
-
-      <SectionHeader icon={Users} title="Credit customers" />
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>{credits.map((c, i) => <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: C.panel, borderRadius: 10, padding: "12px 16px" }}><div><div style={{ color: C.text, fontSize: 14, fontWeight: 600 }}>{c.name}</div><div style={{ color: c.days > 30 ? C.red : C.textDim, fontSize: 12 }}>{c.days === 0 ? "Added today" : `${c.days} days outstanding`}</div></div><div style={{ color: C.amber, fontFamily: "monospace", fontWeight: 700 }}>₹{c.amount.toLocaleString()}</div></div>)}</div>
-
-      <SectionHeader icon={Truck} title="Tanker delivery" />
-      <button onClick={() => setStockLogOpen(v => !v)} style={{ width: "100%", background: C.panel, border: `1px dashed ${C.line}`, borderRadius: 10, padding: "14px 16px", color: C.textDim, fontSize: 14, cursor: "pointer", textAlign: "left" }}>{stockLogOpen ? "Delivery entry form (demo — not wired up)" : "+ Log new fuel delivery"}</button>
-
-      <SectionHeader icon={Tag} title="Fuel prices" />
-      <div style={{ display: "flex", gap: 12 }}><div style={{ flex: 1, background: C.panel, borderRadius: 10, padding: "12px 16px" }}><div style={{ color: C.textDim, fontSize: 12, marginBottom: 4 }}>Petrol</div><div style={{ color: C.text, fontFamily: "monospace", fontSize: 18, fontWeight: 700 }}>₹{petrolPrice}</div></div><div style={{ flex: 1, background: C.panel, borderRadius: 10, padding: "12px 16px" }}><div style={{ color: C.textDim, fontSize: 12, marginBottom: 4 }}>Diesel</div><div style={{ color: C.text, fontFamily: "monospace", fontSize: 18, fontWeight: 700 }}>₹{dieselPrice}</div></div></div>
-      <div style={{ color: C.textDim, fontSize: 12, marginTop: 8 }}>Manager updates these when the price changes — staff entries use whatever is set here.</div>
-    </div>}
-
-    {view === "owner" && <div style={{ padding: "28px 24px 60px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}><LayoutDashboard size={22} color={C.amber} /><h1 style={{ fontSize: 22, fontWeight: 700, color: C.text }}>Business overview</h1></div>
-      <p style={{ color: C.textDim, fontSize: 13, marginBottom: 20 }}>Trends, money, and risk — not day-to-day operations.</p>
-      <div style={{ display: "flex", gap: 12, marginBottom: 10 }}><StatCard label="Est. revenue (period)" value={`₹${totalRevenueEstimate.toLocaleString()}`} /><StatCard label="Total mismatch (period)" value={`₹${totalMismatchAmount}`} accent={totalMismatchAmount > 0 ? C.red : C.green} /></div>
-      <div style={{ display: "flex", gap: 12, marginBottom: 20 }}><StatCard label="Credit exposure" value={`₹${totalCreditExposure.toLocaleString()}`} sub={`${credits.length} customers`} /><StatCard label="Overdue 30+ days" value={overdueCredit.length} accent={overdueCredit.length ? C.red : C.green} sub={`₹${overdueCredit.reduce((s, c) => s + c.amount, 0).toLocaleString()}`} /></div>
-      <SectionHeader icon={TrendingUp} title="Staff pattern — where to look closer" />
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>{staffPatterns.map((s, i) => <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: C.panel, borderRadius: 10, padding: "12px 16px" }}><div style={{ color: C.text, fontSize: 14, fontWeight: 600 }}>{s.name}</div><div style={{ fontSize: 13, color: s.mismatches > 1 ? C.red : C.textDim }}>{s.mismatches} mismatch{s.mismatches !== 1 ? "es" : ""} / {s.shifts} shifts</div></div>)}</div>
-      <SectionHeader icon={Wallet} title="Credit exposure — aging" />
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>{[...credits].sort((a,b) => b.days-a.days).map((c, i) => <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", background: C.panel, borderRadius: 10, padding: "12px 16px", border: c.days > 30 ? `1px solid ${C.red}` : `1px solid ${C.line}` }}><div style={{ color: C.text, fontSize: 14, fontWeight: 600 }}>{c.name}</div><div style={{ display: "flex", gap: 14, alignItems: "center" }}><span style={{ color: c.days > 30 ? C.red : C.textDim, fontSize: 12 }}>{c.days}d</span><span style={{ color: C.amber, fontFamily: "monospace", fontWeight: 700 }}>₹{c.amount.toLocaleString()}</span></div></div>)}</div>
-      <div style={{ marginTop: 24, padding: "14px 16px", background: C.panel2, borderRadius: 10, color: C.textDim, fontSize: 12 }}>Multi-pump comparison will appear here once more than one pump is connected.</div>
-    </div>}
-  </div>;
+function bind(){}
+function setView(v){view=v;modal=null;render()}
+function chooseStaff(n){form.staff=n;step=1;render()}
+function next(){if(step===6){submitShift();return}step++;render()}
+function back(){step=Math.max(0,step-1);render()}
+function submitShift(){
+ const d=diff(),s=sold(),id=Date.now();
+ db.shifts.unshift({id,staff:form.staff,date:"24 Aug",openP:+form.openP,closeP:+form.closeP,openD:+form.openD,closeD:+form.closeD,cash:+form.cash,digital:+form.digital||0,credit:+form.credit||0,diff:d,status:Math.abs(d)<=5?"matched":"flagged",note:""});
+ if(+form.credit>0&&form.creditName)db.credits.unshift({id:id+1,name:form.creditName,amount:+form.credit,days:0});
+ save();step=7;render()
 }
-
-ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
-</script></body></html>
+function newShift(){step=0;form={staff:"",openP:"",openD:"",closeP:"",closeD:"",cash:"",digital:"",credit:"",creditName:""};render()}
+function resolve(id){let n=document.getElementById("note"+id)?.value.trim()||"Resolved by manager";db.shifts=db.shifts.map(x=>x.id===id?({...x,note:n,status:"resolved"}):x);save();render()}
+function openModal(m){modal=m;render()}
+function closeModal(){modal=null;render()}
+function addDelivery(){let q=+$("delQty").value;if(!q)return alert("Enter quantity");db.deliveries.unshift({id:Date.now(),product:$("delProduct").value,qty:q,ref:$("delRef").value,date:"24 Aug"});save();closeModal()}
+function savePrices(){let p=+$("priceP").value,d=+$("priceD").value;if(p>0&&d>0){db.prices={petrol:p,diesel:d};save();closeModal()}}
+function resetData(){db=structuredClone(defaults);save();modal=null;view="staff";newShift()}
+render();
+</script>
+</body>
+</html>
