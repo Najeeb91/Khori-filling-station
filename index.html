@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PumpOS — First-Time Onboarding Prototype</title>
+<style>
+:root{
+  --bg:#f5f7f9; --card:#fff; --text:#111827; --muted:#6b7280;
+  --line:#e5e7eb; --accent:#0f766e; --accent2:#115e59; --soft:#ecfdf5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:#dfe5e8;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--text)}
+.phone{width:390px;max-width:100vw;min-height:844px;margin:0 auto;background:var(--bg);position:relative;overflow:hidden}
+.screen{min-height:844px;padding:28px 22px 30px;display:flex;flex-direction:column}
+.center{align-items:center;justify-content:center;text-align:center}
+.hidden{display:none!important}
+.logoMark{width:66px;height:66px;border-radius:20px;background:linear-gradient(145deg,#0f766e,#134e4a);display:grid;place-items:center;color:#fff;font-weight:800;font-size:25px;box-shadow:0 14px 35px rgba(15,118,110,.24);margin-bottom:18px}
+.logo{font-size:29px;font-weight:800;letter-spacing:-1.2px}
+.tag{color:var(--muted);font-size:14px;line-height:1.5}
+h1{font-size:28px;line-height:1.13;letter-spacing:-.8px;margin:10px 0 10px}
+h2{font-size:23px;letter-spacing:-.4px;margin:5px 0 8px}
+p{line-height:1.5}
+.spacer{flex:1}
+.btn{border:0;border-radius:14px;padding:15px 18px;font-size:16px;font-weight:700;width:100%;cursor:pointer;background:var(--accent);color:white;box-shadow:0 8px 18px rgba(15,118,110,.18)}
+.btn:active{transform:scale(.99)}
+.btn.secondary{background:#fff;color:var(--text);border:1px solid var(--line);box-shadow:none}
+.link{background:none;border:0;color:var(--accent2);font-weight:700;cursor:pointer;padding:12px}
+.field{background:#fff;border:1px solid var(--line);border-radius:13px;padding:15px;width:100%;font-size:16px;outline:none}
+.field:focus{border-color:var(--accent)}
+.label{font-size:13px;font-weight:700;margin:18px 0 7px;display:block}
+.progress{height:5px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:8px 0 25px}
+.progress span{display:block;height:100%;background:var(--accent);transition:.25s}
+.top{display:flex;align-items:center;gap:10px}
+.back{border:0;background:#fff;border:1px solid var(--line);width:40px;height:40px;border-radius:12px;font-size:20px;cursor:pointer}
+.option{background:#fff;border:1.5px solid var(--line);padding:16px;border-radius:14px;margin:8px 0;text-align:left;cursor:pointer;font-weight:700}
+.option.selected{border-color:var(--accent);background:var(--soft)}
+.choiceGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.choice{background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:17px 12px;text-align:center;cursor:pointer;font-weight:700}
+.choice.selected{border-color:var(--accent);background:var(--soft)}
+.summary{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #f0f0f0}
+.row:last-child{border-bottom:0}
+.small{font-size:12px;color:var(--muted)}
+.check{color:var(--accent);font-weight:800}
+.pumpIllustration{width:220px;height:150px;margin-bottom:25px;position:relative}
+.canopy{height:20px;border-radius:10px 10px 4px 4px;background:#134e4a;width:190px;position:absolute;top:10px;left:15px}
+.pillar{position:absolute;top:30px;width:13px;height:95px;background:#94a3b8}
+.pillar.l{left:35px}.pillar.r{right:35px}
+.base{position:absolute;bottom:8px;left:22px;width:176px;height:12px;border-radius:8px;background:#cbd5e1}
+.pumpbox{position:absolute;bottom:20px;left:82px;width:56px;height:82px;background:#fff;border:4px solid #334155;border-radius:7px}
+.pumpbox:before{content:"";position:absolute;left:10px;right:10px;top:10px;height:22px;background:#dbeafe;border-radius:4px}
+.pumpbox:after{content:"";position:absolute;left:18px;bottom:10px;width:14px;height:27px;background:#0f766e;border-radius:3px}
+.fade{animation:fade .55s ease}
+@keyframes fade{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+.splashLogo{animation:pop 1.2s ease both}
+@keyframes pop{0%{opacity:0;transform:scale(.72)}45%{opacity:1;transform:scale(1.04)}100%{transform:scale(1)}}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<section id="splash" class="screen center">
+  <div class="logoMark splashLogo">P</div>
+  <div class="logo splashLogo">PumpOS</div>
+  <div class="tag splashLogo">Fuel station operating system</div>
+</section>
+
+<section id="welcome" class="screen center hidden fade">
+  <div class="pumpIllustration">
+    <div class="canopy"></div><div class="pillar l"></div><div class="pillar r"></div>
+    <div class="pumpbox"></div><div class="base"></div>
+  </div>
+  <div class="logo">PumpOS</div>
+  <h1>Run your entire fuel station from one place.</h1>
+  <p class="tag">Sales • Stock • Shifts • Staff • Accounts</p>
+  <div class="spacer"></div>
+  <button class="btn" onclick="go('language')">Get Started</button>
+  <button class="link" onclick="go('login')">Already have an account? Log in</button>
+</section>
+
+<section id="language" class="screen hidden fade">
+  <div class="top"><button class="back" onclick="go('welcome')">‹</button><div><b>Step 1 of 6</b><div class="small">Language</div></div></div>
+  <div class="progress"><span style="width:16%"></span></div>
+  <h2>Choose your language</h2><p class="tag">You can change this later for each user.</p>
+  <button class="option selected" onclick="selectOne(this)">English</button>
+  <button class="option" onclick="selectOne(this)">हिन्दी</button>
+  <button class="option" onclick="selectOne(this)">Other Indian language</button>
+  <div class="spacer"></div><button class="btn" onclick="go('mobile')">Continue</button>
+</section>
+
+<section id="mobile" class="screen hidden fade">
+  <div class="top"><button class="back" onclick="go('language')">‹</button><div><b>Step 2 of 6</b><div class="small">Account</div></div></div>
+  <div class="progress"><span style="width:33%"></span></div>
+  <h2>Create your PumpOS account</h2><p class="tag">We'll use your mobile number to secure your account.</p>
+  <label class="label">Mobile number</label>
+  <input id="mobileInput" class="field" inputmode="numeric" maxlength="10" placeholder="10-digit mobile number">
+  <p id="mobileError" class="small hidden" style="color:#b91c1c">Enter a valid 10-digit mobile number.</p>
+  <div class="spacer"></div><button class="btn" onclick="sendOtp()">Send OTP</button>
+</section>
+
+<section id="otp" class="screen hidden fade">
+  <div class="top"><button class="back" onclick="go('mobile')">‹</button><div><b>Step 2 of 6</b><div class="small">Verification</div></div></div>
+  <div class="progress"><span style="width:33%"></span></div>
+  <h2>Verify your mobile</h2><p class="tag">Demo OTP is <b>123456</b>.</p>
+  <label class="label">6-digit OTP</label>
+  <input id="otpInput" class="field" inputmode="numeric" maxlength="6" placeholder="123456">
+  <p id="otpError" class="small hidden" style="color:#b91c1c">For this prototype, enter 123456.</p>
+  <div class="spacer"></div><button class="btn" onclick="verifyOtp()">Verify & Continue</button>
+</section>
+
+<section id="profile" class="screen hidden fade">
+  <div class="top"><button class="back" onclick="go('otp')">‹</button><div><b>Step 3 of 6</b><div class="small">Your profile</div></div></div>
+  <div class="progress"><span style="width:50%"></span></div>
+  <h2>Tell us about you</h2>
+  <label class="label">Full name</label><input id="nameInput" class="field" placeholder="Your name">
+  <label class="label">Your role</label>
+  <div class="choiceGrid">
+    <div class="choice selected" onclick="chooseRole(this)">Owner</div>
+    <div class="choice" onclick="chooseRole(this)">Manager</div>
+    <div class="choice" onclick="chooseRole(this)">Accountant</div>
+    <div class="choice" onclick="chooseRole(this)">Other</div>
+  </div>
+  <div class="spacer"></div><button class="btn" onclick="profileNext()">Continue</button>
+</section>
+
+<section id="station" class="screen hidden fade">
+  <div class="top"><button class="back" onclick="go('profile')">‹</button><div><b>Step 4 of 6</b><div class="small">Your station</div></div></div>
+  <div class="progress"><span style="width:66%"></span></div>
+  <h2>Tell us about your station</h2>
+  <label class="label">Petrol pump name</label><input id="stationInput" class="field" placeholder="e.g. Asian Filling Station">
+  <label class="label">Oil company</label>
+  <div class="choiceGrid">
+    <div class="choice selected" onclick="chooseOil(this)">IndianOil</div>
+    <div class="choice" onclick="chooseOil(this)">BPCL</div>
+    <div class="choice" onclick="chooseOil(this)">HPCL</div>
+    <div class="choice" onclick="chooseOil(this)">Other</div>
+  </div>
+  <label class="label">PIN code</label><input class="field" inputmode="numeric" maxlength="6" placeholder="6-digit PIN">
+  <div class="spacer"></div><button class="btn" onclick="stationNext()">Continue</button>
+</section>
+
+<section id="products" class="screen hidden fade">
+  <div class="top"><button class="back" onclick="go('station')">‹</button><div><b>Step 5 of 6</b><div class="small">Products & equipment</div></div></div>
+  <div class="progress"><span style="width:83%"></span></div>
+  <h2>What do you sell?</h2><p class="tag">Select the products available at your station.</p>
+  <div class="choiceGrid">
+    <div class="choice selected" onclick="toggle(this)">Petrol</div>
+    <div class="choice selected" onclick="toggle(this)">Diesel</div>
+    <div class="choice" onclick="toggle(this)">CNG</div>
+    <div class="choice" onclick="toggle(this)">Lubricants</div>
+  </div>
+  <label class="label">Dispensing machines</label>
+  <div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px">
+    <span><b>Machines</b><br><span class="small">You can edit this later</span></span>
+    <span style="display:flex;align-items:center;gap:14px"><button class="back" onclick="changeCount(-1)">−</button><b id="machineCount">2</b><button class="back" onclick="changeCount(1)">+</button></span>
+  </div>
+  <div class="spacer"></div><button class="btn" onclick="go('ready')">Finish basic setup</button>
+</section>
+
+<section id="ready" class="screen center hidden fade">
+  <div class="logoMark">✓</div>
+  <h1>Your station is ready.</h1>
+  <p id="readyText" class="tag">Your PumpOS workspace has been created.</p>
+  <div class="summary" style="width:100%;text-align:left">
+    <div class="row"><span>Account</span><span class="check">✓ Ready</span></div>
+    <div class="row"><span>Station</span><b id="summaryStation">Your Station</b></div>
+    <div class="row"><span>Products</span><span>Petrol • Diesel</span></div>
+    <div class="row"><span>Machines</span><span id="summaryMachines">2</span></div>
+  </div>
+  <div class="spacer"></div>
+  <button class="btn" onclick="go('dashboard')">Enter PumpOS</button>
+</section>
+
+<section id="dashboard" class="screen hidden fade">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <div><div class="small">GOOD MORNING</div><h2 style="margin-top:3px">PumpOS</h2></div>
+    <div class="logoMark" style="width:44px;height:44px;border-radius:14px;font-size:18px;margin:0">P</div>
+  </div>
+  <div class="summary">
+    <div class="small">STATION</div><b id="dashStation" style="font-size:19px">Your Station</b>
+  </div>
+  <div class="small" style="margin:8px 0">TODAY'S OPERATIONS</div>
+  <div class="choiceGrid">
+    <div class="summary"><div class="small">SALES</div><b>₹0</b></div>
+    <div class="summary"><div class="small">FUEL SOLD</div><b>0 L</b></div>
+    <div class="summary"><div class="small">CASH</div><b>₹0</b></div>
+    <div class="summary"><div class="small">CREDIT</div><b>₹0</b></div>
+  </div>
+  <div class="summary" style="border-color:#b7e4dc;background:var(--soft)">
+    <b>Start your first shift</b><p class="small">Begin today's operations by opening a shift.</p>
+    <button class="btn" onclick="alert('Demo: First shift started successfully.')">START SHIFT</button>
+  </div>
+  <div class="small" style="margin:8px 0">SETUP YOU CAN COMPLETE LATER</div>
+  <div class="summary">
+    <div class="row"><span>Add employees</span><span>›</span></div>
+    <div class="row"><span>Configure tanks</span><span>›</span></div>
+    <div class="row"><span>Set shift timings</span><span>›</span></div>
+    <div class="row"><span>Add credit customers</span><span>›</span></div>
+    <div class="row"><span>Accounting setup</span><span>›</span></div>
+  </div>
+</section>
+
+<section id="login" class="screen hidden fade">
+  <div class="top"><button class="back" onclick="go('welcome')">‹</button><div><b>Existing user</b><div class="small">Login</div></div></div>
+  <h2 style="margin-top:28px">Welcome back</h2><p class="tag">Sign in to continue to your station.</p>
+  <label class="label">Mobile number</label><input class="field" inputmode="numeric" placeholder="10-digit mobile number">
+  <label class="label">Password / PIN</label><input class="field" type="password" placeholder="••••••••">
+  <div class="spacer"></div><button class="btn" onclick="alert('Demo login: dashboard would open here.')">Log in</button>
+</section>
+
+</div>
+<script>
+const ids=['splash','welcome','language','mobile','otp','profile','station','products','ready','dashboard','login'];
+function go(id){
+  ids.forEach(x=>document.getElementById(x).classList.add('hidden'));
+  const el=document.getElementById(id); el.classList.remove('hidden'); el.classList.add('fade');
+}
+setTimeout(()=>go('welcome'),1500);
+
+function selectOne(el){el.parentElement.querySelectorAll('.option').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')}
+function toggle(el){el.classList.toggle('selected')}
+function chooseRole(el){el.parentElement.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')}
+function chooseOil(el){el.parentElement.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));el.classList.add('selected')}
+function sendOtp(){
+  const v=document.getElementById('mobileInput').value.replace(/\D/g,'');
+  document.getElementById('mobileError').classList.toggle('hidden',v.length===10);
+  if(v.length===10) go('otp');
+}
+function verifyOtp(){
+  const v=document.getElementById('otpInput').value;
+  document.getElementById('otpError').classList.toggle('hidden',v==='123456');
+  if(v==='123456') go('profile');
+}
+function profileNext(){
+  if(!document.getElementById('nameInput').value.trim()){alert('Please enter your name for this prototype.');return}
+  go('station');
+}
+function stationNext(){
+  if(!document.getElementById('stationInput').value.trim()){alert('Please enter your petrol pump name.');return}
+  document.getElementById('summaryStation').textContent=document.getElementById('stationInput').value.trim();
+  document.getElementById('dashStation').textContent=document.getElementById('stationInput').value.trim();
+  go('products');
+}
+let count=2;
+function changeCount(n){count=Math.max(1,Math.min(12,count+n));document.getElementById('machineCount').textContent=count;document.getElementById('summaryMachines').textContent=count}
+</script>
+</body>
+</html>
